@@ -4,9 +4,9 @@ inputs:
   base_directory:
     description: The base directory
     required: true
-  cache_key:
-    description: "The backend vendor directory cache key"
-    required: true
+  # cache_key:
+  #   description: "The backend vendor directory cache key"
+  #   required: true
 
 runs:
   using: "composite"
