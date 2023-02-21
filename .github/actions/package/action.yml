@@ -66,6 +66,8 @@ runs:
       with:
         path: ${{ inputs.backend_vendor_directory }}
         key: ${{ inputs.backend_vendor_cache_key }}
+        restore_keys: |
+          ${{ github.sha }}-${{ github.run_id }}-vendor
 
     - name: Restore translation directory cache
       if: "${{ inputs.translation_directory != '' && inputs.translation_cache_key != '' }}"
