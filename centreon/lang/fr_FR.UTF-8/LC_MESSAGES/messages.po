@@ -17543,3 +17543,6 @@ msgstr "Erreur lors de la recherche de la catégorie d'hôtes #%d"
 
 msgid "Error while retrieving a host category"
 msgstr "Erreur lors de la récupération de la catégorie d'hôtes"
+
+msgid "Error while updating the host category"
+msgstr "Erreur lors de la mise à jour de la catégorie d'hôte"

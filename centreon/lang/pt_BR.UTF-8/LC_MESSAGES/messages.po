@@ -16151,3 +16151,6 @@ msgstr "Comando de verificação forçada enviado"
 
 #  msgid "Error while retrieving a host category"
 #  msgstr ""
+
+#  msgid "Error while updating the host category"
+#  msgstr ""
