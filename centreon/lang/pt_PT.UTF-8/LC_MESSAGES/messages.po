@@ -16135,3 +16135,9 @@ msgstr "Você não salvou as alterações, deseja continuar?"
 #: centreon-bam/www/modules/centreon-bam-server/react/hooks/header/topCounter
 # msgid "B.Activities"
 # msgstr ""
+
+#  msgid "Error when searching for the host category #%d"
+#  msgstr ""
+
+#  msgid "Error while retrieving a host category"
+#  msgstr ""
