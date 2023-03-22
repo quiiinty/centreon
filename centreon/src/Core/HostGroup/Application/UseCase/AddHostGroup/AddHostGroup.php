@@ -86,7 +86,7 @@ final class AddHostGroup
                     new ForbiddenResponse(HostGroupException::accessNotAllowedForWriting())
                 );
             }
-        } catch (AssertionFailedException|InvalidGeoCoordException $ex) {
+        } catch (AssertionFailedException $ex) {
             $presenter->setResponseStatus(new InvalidArgumentResponse($ex));
             $this->error($ex->getMessage(), ['trace' => $ex->getTraceAsString()]);
         } catch (HostGroupException $ex) {
