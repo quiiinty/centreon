@@ -139,7 +139,7 @@ Feature:
     """
     Then the response code should be "409"
 
-  Scenario: Host group add with unknown fields for the cloud platform
+  Scenario: Host group add with unknown fields for the Cloud platform
     Given I am logged in
     When I send a POST request to '/api/latest/configuration/hosts/groups' with body:
     """
