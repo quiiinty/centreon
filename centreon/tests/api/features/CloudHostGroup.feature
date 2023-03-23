@@ -41,7 +41,7 @@ Feature:
     }
     """
 
-  Scenario: Host group add + update with minimal payload as an Administrator
+  Scenario: Host group add with update with minimal payload as an Administrator
     Given I am logged in
     When I send a POST request to '/api/latest/configuration/hosts/groups' with body:
     """
@@ -67,7 +67,7 @@ Feature:
     """
     Then the response code should be "204"
 
-  Scenario: Host group add + update with an invalid payload as an Administrator
+  Scenario: Host group add with update with an invalid payload as an Administrator
     Given I am logged in
     When I send a POST request to '/api/latest/configuration/hosts/groups' with body:
     """
@@ -218,7 +218,7 @@ Feature:
     """
     Then the response code should be "400"
 
-  Scenario: Host group update with unknown fields for the cloud platform
+  Scenario: Host group update with unknown fields for the Cloud platform
     Given I am logged in
     When I send a PUT request to '/api/latest/configuration/hosts/groups/62' with body:
     """

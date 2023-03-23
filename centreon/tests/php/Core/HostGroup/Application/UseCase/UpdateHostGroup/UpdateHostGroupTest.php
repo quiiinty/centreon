@@ -149,7 +149,7 @@ it(
 );
 
 it(
-    'should present a InvalidArgumentResponse when a model field value is not valid',
+    'should present an InvalidArgumentResponse when a model field value is not valid',
     function (): void {
         $this->contact
             ->expects($this->once())
@@ -182,7 +182,7 @@ it(
 );
 
 it(
-    'should present a InvalidArgumentResponse when the "geoCoords" field value is not valid',
+    'should present an InvalidArgumentResponse when the "geoCoords" field value is not valid',
     function (): void {
         $this->contact
             ->expects($this->once())
