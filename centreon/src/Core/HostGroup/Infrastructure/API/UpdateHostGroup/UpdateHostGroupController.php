@@ -42,6 +42,8 @@ final class UpdateHostGroupController extends AbstractController
      * @param Request $request
      * @param UpdateHostGroup $useCase
      * @param bool $isCloudPlatform
+     * @param int $hostGroupId
+     * @param DefaultPresenter $presenter
      *
      * @throws AccessDeniedException
      *
@@ -67,6 +69,7 @@ final class UpdateHostGroupController extends AbstractController
      * @param UpdateHostGroup $useCase
      * @param DefaultPresenter $presenter
      * @param Request $request
+     * @param int $hostGroupId
      *
      * @return Response
      */
@@ -110,6 +113,7 @@ final class UpdateHostGroupController extends AbstractController
      * @param UpdateHostGroup $useCase
      * @param DefaultPresenter $presenter
      * @param Request $request
+     * @param int $hostGroupId
      *
      * @return Response
      */

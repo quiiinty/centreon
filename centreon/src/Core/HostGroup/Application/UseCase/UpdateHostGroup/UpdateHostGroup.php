@@ -110,8 +110,8 @@ final class UpdateHostGroup
      * @param UpdateHostGroupRequest $request
      * @param int $hostGroupId
      *
-     * @throws \Throwable
      * @throws HostGroupException
+     * @throws \Throwable
      *
      * @return NoContentResponse|NotFoundResponse
      */
@@ -127,8 +127,8 @@ final class UpdateHostGroup
         $this->assertNameDoesNotAlreadyExists($hostGroup, $request);
         $this->assertNotNullIconsExist($request);
 
-        $modifiedHostGroud = $this->createModifiedHostGroup($hostGroup, $request);
-        $this->writeHostGroupRepository->update($modifiedHostGroud);
+        $modifiedHostGroup = $this->createModifiedHostGroup($hostGroup, $request);
+        $this->writeHostGroupRepository->update($modifiedHostGroup);
 
         return new NoContentResponse();
     }
@@ -137,8 +137,8 @@ final class UpdateHostGroup
      * @param UpdateHostGroupRequest $request
      * @param int $hostGroupId
      *
-     * @throws \Throwable
      * @throws HostGroupException
+     * @throws \Throwable
      *
      * @return NoContentResponse|NotFoundResponse
      */
@@ -155,8 +155,8 @@ final class UpdateHostGroup
         $this->assertNameDoesNotAlreadyExists($hostGroup, $request);
         $this->assertNotNullIconsExist($request);
 
-        $modifiedHostGroud = $this->createModifiedHostGroup($hostGroup, $request);
-        $this->writeHostGroupRepository->update($modifiedHostGroud);
+        $modifiedHostGroup = $this->createModifiedHostGroup($hostGroup, $request);
+        $this->writeHostGroupRepository->update($modifiedHostGroup);
 
         return new NoContentResponse();
     }
@@ -214,8 +214,8 @@ final class UpdateHostGroup
      * @param HostGroup $hostGroup
      * @param UpdateHostGroupRequest $request
      *
-     * @throws AssertionFailedException
      * @throws InvalidGeoCoordException
+     * @throws AssertionFailedException
      *
      * @return HostGroup
      */
