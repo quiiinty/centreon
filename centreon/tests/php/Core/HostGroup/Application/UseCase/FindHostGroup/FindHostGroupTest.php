@@ -101,7 +101,7 @@ it(
 );
 
 it(
-    'should present an NotFoundResponse when an exception is thrown',
+    'should present a NotFoundResponse when an exception is thrown',
     function (): void {
         $this->contact
             ->expects($this->once())
