@@ -128,35 +128,62 @@ class NewHostTemplate
     ) {
         $shortName = (new \ReflectionClass($this))->getShortName();
 
-        // Assertions on string properties
-        $this->name = trim($name);
-        $this->alias = trim($alias);
-        $this->snmpCommunity = trim($snmpCommunity);
-        $this->checkCommandArgs = trim($checkCommandArgs);
-        $this->eventHandlerCommandArgs = trim($eventHandlerCommandArgs);
-        $this->noteUrl = trim($noteUrl);
-        $this->note = trim($note);
-        $this->actionUrl = trim($actionUrl);
-        $this->iconAlternative = trim($iconAlternative);
-        $this->comment = trim($comment);
+        // Formating
+        $this->name = self::formatName($name);
+        $this->checkCommandArgs = self::formatCommandArgs($checkCommandArgs);
+        $this->eventHandlerCommandArgs = self::formatCommandArgs($eventHandlerCommandArgs);
 
+        // Assertions on string properties
         Assertion::notEmptyString($name, "{$shortName}::name");
         Assertion::notEmptyString($alias, "{$shortName}::alias");
 
-        Assertion::maxLength($name, self::MAX_NAME_LENGTH, "{$shortName}::name");
-        Assertion::maxLength($alias, self::MAX_ALIAS_LENGTH, "{$shortName}::alias");
-        Assertion::maxLength($snmpCommunity, self::MAX_SNMP_COMMUNITY_LENGTH, "{$shortName}::snmpCommunity");
-        Assertion::maxLength($checkCommandArgs, self::MAX_CHECK_COMMAND_ARGS_LENGTH, "{$shortName}::checkCommandArgs");
-        Assertion::maxLength(
-            $eventHandlerCommandArgs,
-            self::MAX_EVENT_HANDLER_COMMAND_ARGS_LENGTH,
-            "{$shortName}::eventHandlerCommandArgs"
-        );
-        Assertion::maxLength($noteUrl, self::MAX_NOTE_URL_LENGTH, "{$shortName}::noteUrl");
-        Assertion::maxLength($note, self::MAX_NOTE_LENGTH, "{$shortName}::note");
-        Assertion::maxLength($actionUrl, self::MAX_ACTION_URL_LENGTH, "{$shortName}::actionUrl");
-        Assertion::maxLength($iconAlternative, self::MAX_ICON_ALT_LENGTH, "{$shortName}::iconAlternative");
-        Assertion::maxLength($comment, self::MAX_COMMENT_LENGTH, "{$shortName}::comment");
+        $properties = [
+            'name' => [
+                'value' => $name,
+                'max_length' => self::MAX_NAME_LENGTH,
+            ],
+            'alias' => [
+                'value' => $alias,
+                'max_length' => self::MAX_ALIAS_LENGTH,
+            ],
+            'snmpCommunity' => [
+                'value' => $snmpCommunity,
+                'max_length' => self::MAX_SNMP_COMMUNITY_LENGTH,
+            ],
+            'checkCommandArgs' => [
+                'value' => $checkCommandArgs,
+                'max_length' => self::MAX_CHECK_COMMAND_ARGS_LENGTH,
+            ],
+            'eventHandlerCommandArgs' => [
+                'value' => $eventHandlerCommandArgs,
+                'max_length' => self::MAX_EVENT_HANDLER_COMMAND_ARGS_LENGTH,
+            ],
+            'noteUrl' => [
+                'value' => $noteUrl,
+                'max_length' => self::MAX_NOTE_URL_LENGTH,
+            ],
+            'note' => [
+                'value' => $note,
+                'max_length' => self::MAX_NOTE_LENGTH,
+            ],
+            'actionUrl' => [
+                'value' => $actionUrl,
+                'max_length' => self::MAX_ACTION_URL_LENGTH,
+            ],
+            'iconAlternative' => [
+                'value' => $iconAlternative,
+                'max_length' => self::MAX_ICON_ALT_LENGTH,
+            ],
+            'comment' => [
+                'value' => $comment,
+                'max_length' => self::MAX_COMMENT_LENGTH,
+            ],
+        ];
+        foreach ($properties as $propertieName => $propertieInfo) {
+            $this->{$propertieName} = trim($propertieInfo['value']);
+
+            Assertion::maxLength($propertieInfo['value'], $propertieInfo['max_length'], "{$shortName}::{$propertieName}");
+        }
 
         // Assertions on ForeignKeys
         $foreignKeys = [
@@ -185,6 +212,26 @@ class NewHostTemplate
         Assertion::min($freshnessThreshold ?? 0, 0, "{$shortName}::freshnessThreshold");
         Assertion::min($lowFlapThreshold ?? 0, 0, "{$shortName}::lowFlapThreshold");
         Assertion::min($highFlapThreshold ?? 0, 0, "{$shortName}::highFlapThreshold");
+    }
+
+    /**
+     * Format a string as per domain rules for a host template name.
+     *
+     * @param string $name
+     */
+    public static function formatName(string $name): string
+    {
+        return str_replace(' ', '_', trim($name));
+    }
+
+    /**
+     * Format a string as per domain rules for a command arguments.
+     *
+     * @param string $args
+     */
+    public static function formatCommandArgs(string $args): string
+    {
+        return str_replace(["\n", "\t", "\r"], ['#BR#', '#T#', '#R#'], $args);
     }
 
     public function getName(): string
