@@ -46,12 +46,12 @@ if (isset($url)) {
      * main.php).
      */
     $statementSelect = $pearDB->prepare(
-        'SELECT topology_url FROM topology WHERE topology_page = :topology_page'
+        'SELECT topology_url, topology_url_substitute FROM topology WHERE topology_page = :topology_page'
     );
     $statementSelect->bindValue(':topology_page', $p, \PDO::PARAM_INT);
     if ($statementSelect->execute()) {
         $result = $statementSelect->fetch(\PDO::FETCH_ASSOC);
-        if ($result !== false && $result['topology_url'] != $url) {
+        if ($result !== false && $result['topology_url'] != $url && $result['topology_url_substitute'] === null) {
             /**
              * If urls are not equal we can retrieve the topology page number
              * associated to this url because there is multiple topology page

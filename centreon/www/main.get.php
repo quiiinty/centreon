@@ -106,12 +106,36 @@ $centreon->user->setCurrentPage($p);
  */
 global $is_admin;
 $is_admin = $centreon->user->admin;
+/**
+ * @param int $page
+ *
+ * @return array{
+ *     topology_id: int,
+ *     topology_parent: int|null,
+ *     topology_page: int|null,
+ *     topology_name: string,
+ *     topology_url: string|null,
+ *     topology_url_substitute: string|null,
+ * }
+ */
+function loadTopology(int $page): array
+{
+    global $pearDB;
+    $query = <<<SQL
+        SELECT topology_parent, topology_name, topology_id, topology_url, topology_page, topology_url_substitute
+        FROM topology
+        WHERE topology_page = :page
+        SQL;
+    $statement = $pearDB->prepare($query);
+    $statement->bindValue(':page', $page, \PDO::PARAM_INT);
+    $statement->execute();
+    return $statement->fetch(\PDO::FETCH_ASSOC);
+}
 
-$query = "SELECT topology_parent,topology_name,topology_id,topology_url,topology_page " .
-    " FROM topology WHERE topology_page = '" . $p . "'";
-$DBRESULT = $pearDB->query($query);
-$redirect = $DBRESULT->fetch();
-
+$redirect = loadTopology((int) $p);
+if ($redirect['topology_url_substitute'] !== null) {
+    $redirect['topology_url'] = $redirect['topology_url_substitute'];
+}
 /**
  *  Is server a remote ?
  */
@@ -128,7 +152,10 @@ if ($row = $result->fetch()) {
  */
 $url = "";
 $acl_page = $centreon->user->access->page($p, true);
-if ($redirect !== false && ($acl_page == 1 || $acl_page == 2)) {
+if (
+        $redirect !== false
+        && ($acl_page == CentreonACL::ACL_ACCESS_READ_WRITE || $acl_page == CentreonACL::ACL_ACCESS_READ_ONLY)
+) {
     if ($redirect["topology_page"] < 100) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
         if ($ret === false || !$ret['topology_page']) {
@@ -171,9 +198,9 @@ if ($redirect !== false && ($acl_page == 1 || $acl_page == 2)) {
         }
     } elseif ($redirect["topology_page"] >= 100 && $redirect["topology_page"] < 1000) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
+        $url = $ret["topology_url_substitute"] ?? $ret["topology_url"];
         if ($ret === false || !$ret['topology_page']) {
-            if (file_exists($redirect["topology_url"])) {
-                $url = $redirect["topology_url"];
+            if (file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
@@ -186,8 +213,7 @@ if ($redirect !== false && ($acl_page == 1 || $acl_page == 2)) {
                 }
                 $p = $ret["topology_page"];
             }
-            if (file_exists($ret["topology_url"])) {
-                $url = $ret["topology_url"];
+            if (file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
@@ -195,23 +221,22 @@ if ($redirect !== false && ($acl_page == 1 || $acl_page == 2)) {
         }
     } elseif ($redirect["topology_page"] >= 1000) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
+        $url = $ret["topology_url_substitute"] ?? $ret["topology_url"];
         if ($ret === false || !$ret['topology_page']) {
-            if (file_exists($redirect["topology_url"])) {
-                $url = $redirect["topology_url"];
+            if (file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
             }
         } else {
-            if (file_exists($redirect["topology_url"]) && $ret['topology_page']) {
-                $url = $redirect["topology_url"];
+            if (file_exists($url) && $ret['topology_page']) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
             }
         }
     }
-    if (isset($o) && $acl_page == 2) {
+    if (isset($o) && $acl_page == CentreonACL::ACL_ACCESS_READ_ONLY) {
         if ($o == 'c') {
             $o = 'w';
         } elseif ($o == 'a') {
