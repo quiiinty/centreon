@@ -17540,3 +17540,9 @@ msgstr "Définir la relation entre les rôles et les groupes d'accès ACL"
 
 msgid "B.Activities"
 msgstr "A.Métier"
+
+msgid "Error while searching for host templates"
+msgstr "Erreur lors de la recherche des templates d'hôtes"
+
+msgid "You are not allowed to access host templates"
+msgstr "Vous n'êtes pas autorisé à accéder aux templates d'hôtes"

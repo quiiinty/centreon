@@ -16135,3 +16135,9 @@ msgstr "Você não salvou as alterações, deseja continuar?"
 #: centreon-bam/www/modules/centreon-bam-server/react/hooks/header/topCounter
 # msgid "B.Activities"
 # msgstr ""
+
+#  msgid "Error while searching for host templates"
+#  msgstr ""
+
+#  msgid "You are not allowed to access host templates"
+#  msgstr ""
