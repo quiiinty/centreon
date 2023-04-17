@@ -49,9 +49,7 @@ class DbReadResourceRepository extends AbstractRepositoryDRB implements ReadReso
      */
     private array $resources = [];
 
-    private const RESOURCE_TYPE_SERVICE = 0,
-                  RESOURCE_TYPE_HOST = 1,
-                  RESOURCE_TYPE_METASERVICE = 2;
+    private const RESOURCE_TYPE_HOST = 1;
 
     /**
      * @var ResourceTypeInterface[]
