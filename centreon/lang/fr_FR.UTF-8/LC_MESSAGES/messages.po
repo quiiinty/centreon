@@ -17546,3 +17546,24 @@ msgstr "Erreur lors de la recherche des templates d'hôtes"
 
 msgid "You are not allowed to access host templates"
 msgstr "Vous n'êtes pas autorisé à accéder aux templates d'hôtes"
+
+msgid "Error while deleting a host template"
+msgstr "Erreur lors de la suppression du template d'hôtes"
+
+msgid "Error while adding a host template"
+msgstr "Erreur lors de la création du template d'hôtes"
+
+msgid "You are not allowed to delete host templates"
+msgstr "Vous n'êtes pas autorisé à supprimer des templates d'hôtes"
+
+msgid "You are not allowed to add host templates"
+msgstr "Vous n'êtes pas autorisé à créer des templates d'hôtes"
+
+msgid "The %s with value '%d' does not exist"
+msgstr "Le champ %s avec la valeur '%d' n'existe pas"
+
+msgid "The name %s (original name: %s) already exists"
+msgstr "Le nom %s (nom original: %s) existe déjà"
+
+msgid "Error while retrieving a host template"
+msgstr "Error lors de la récupération d'un template d'hôtes"
