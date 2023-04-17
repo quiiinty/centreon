@@ -118,8 +118,7 @@ $is_admin = $centreon->user->admin;
  *     topology_url_substitute: string|null,
  * }
  */
-function loadTopology(int $page): array
-{
+$loadTopology = function (int $page): array {
     global $pearDB;
     $query = <<<SQL
         SELECT topology_parent, topology_name, topology_id, topology_url, topology_page, topology_url_substitute
@@ -130,9 +129,17 @@ function loadTopology(int $page): array
     $statement->bindValue(':page', $page, \PDO::PARAM_INT);
     $statement->execute();
     return $statement->fetch(\PDO::FETCH_ASSOC);
-}
+};
 
-$redirect = loadTopology((int) $p);
+
+$getTopologyUrl = function (mixed $data): ?string {
+    if (! is_array($data)) {
+        return null;
+    }
+    return $data['topology_url_substitute'] ?? $data['topology_url'];
+};
+
+$redirect = $loadTopology((int) $p);
 if ($redirect['topology_url_substitute'] !== null) {
     $redirect['topology_url'] = $redirect['topology_url_substitute'];
 }
@@ -158,9 +165,9 @@ if (
 ) {
     if ($redirect["topology_page"] < 100) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
-        if ($ret === false || !$ret['topology_page']) {
-            if (file_exists($redirect["topology_url"])) {
-                $url = $redirect["topology_url"];
+        if ($ret === false || ! $ret['topology_page']) {
+            $url = $getTopologyUrl($redirect);
+            if ($url && file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
@@ -174,20 +181,19 @@ if (
                 }
                 $p = $ret2["topology_page"];
             }
-            if (file_exists($ret2["topology_url"])) {
-                $url = $ret2["topology_url"];
+            $url = $getTopologyUrl($ret2);
+            if ($url && file_exists($url)) {
                 reset_search_page($url);
                 if ($ret2["topology_url_opt"]) {
                     $tab = preg_split("/\=/", $ret2["topology_url_opt"]);
                     $o = $tab[1];
                 }
-            } elseif ($ret['topology_url']) {
-                $url = $ret['topology_url'];
+            } elseif ($url) {
                 if ($ret['is_react'] === '1') {
                     // workaround to update react page without refreshing whole page
                     echo '<script>'
-                        . 'window.top.history.pushState("", "", ".' . $ret['topology_url'] . '");'
-                        . 'window.top.history.pushState("", "", ".' . $ret['topology_url'] . '");'
+                        . 'window.top.history.pushState("", "", ".' . $url . '");'
+                        . 'window.top.history.pushState("", "", ".' . $url . '");'
                         . 'window.top.history.go(-1);'
                         . '</script>';
                     exit();
@@ -198,9 +204,9 @@ if (
         }
     } elseif ($redirect["topology_page"] >= 100 && $redirect["topology_page"] < 1000) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
-        $url = $ret["topology_url_substitute"] ?? $ret["topology_url"];
+        $url = $getTopologyUrl($ret);
         if ($ret === false || !$ret['topology_page']) {
-            if (file_exists($url)) {
+            if ($url && file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
@@ -221,15 +227,15 @@ if (
         }
     } elseif ($redirect["topology_page"] >= 1000) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
-        $url = $ret["topology_url_substitute"] ?? $ret["topology_url"];
+        $url = $getTopologyUrl($redirect);
         if ($ret === false || !$ret['topology_page']) {
-            if (file_exists($url)) {
+            if ($url && file_exists($url)) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";
             }
         } else {
-            if (file_exists($url) && $ret['topology_page']) {
+            if ($url && file_exists($url) && $ret['topology_page']) {
                 reset_search_page($url);
             } else {
                 $url = "./include/core/errors/alt_error.php";

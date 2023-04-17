@@ -1557,7 +1557,9 @@ function get_child($id_page, $lcaTStr)
                 topology_page, topology_url_opt, is_react
             FROM topology
             WHERE topology_page IN ($lcaTStr)
-                AND topology_parent = :id_page AND topology_page IS NOT NULL AND topology_show = '1'
+                AND topology_parent = :id_page
+                AND topology_page IS NOT NULL
+                AND topology_show = '1'
             ORDER BY topology_order, topology_group
         SQL;
     } else {
@@ -1565,14 +1567,16 @@ function get_child($id_page, $lcaTStr)
             SELECT topology_parent, topology_name, topology_id, topology_url, topology_url_substitute,
                 topology_page, topology_url_opt, is_react
             FROM topology
-            WHERE topology_parent = :id_page AND topology_page IS NOT NULL AND topology_show = '1'
+            WHERE topology_parent = :id_page
+              AND topology_page IS NOT NULL
+              AND topology_show = '1'
             ORDER BY topology_order, topology_group
         SQL;
     }
     $statement = $pearDB->prepare($rq);
-    $statement->bindValue(':id_page', $id_page, PDO::PARAM_INT);
+    $statement->bindValue(':id_page', (int) $id_page, \PDO::PARAM_INT);
     $statement->execute();
-    return $statement->fetch();
+    return $statement->fetch(\PDO::FETCH_ASSOC);
 }
 
 /**
