@@ -292,6 +292,8 @@ services:
             tags: ['platform.requirement.validators']
         Core\Platform\Infrastructure\Validator\RequirementValidators\DatabaseRequirementValidatorInterface:
             tags: ['platform.requirement.database.validators']
+        Core\Notification\Infrastructure\Repository\NotificationResourceRequestProviderInterface:
+            tags: ['configuration.notification.request.provider']
 
     Core\Security\ProviderConfiguration\Application\UseCase\FindProviderConfigurations\FindProviderConfigurations:
         arguments:
@@ -478,3 +480,8 @@ services:
     CentreonNotification\Domain\Repository\DependencyRepository:
         class: CentreonNotification\Domain\Repository\DependencyRepository
         public: true
+
+    # Configuration Notifications
+    Core\Notification\Infrastructure\Repository\DbReadNotificationRepository:
+        arguments:
+            $notificationResourceProviders: !tagged_iterator 'configuration.notification.request.provider'
