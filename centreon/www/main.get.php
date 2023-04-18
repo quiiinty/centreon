@@ -204,7 +204,7 @@ if (
         }
     } elseif ($redirect["topology_page"] >= 100 && $redirect["topology_page"] < 1000) {
         $ret = get_child($redirect["topology_page"], $centreon->user->access->topologyStr);
-        $url = $getTopologyUrl($ret);
+        $url = $getTopologyUrl($redirect);
         if ($ret === false || !$ret['topology_page']) {
             if ($url && file_exists($url)) {
                 reset_search_page($url);
